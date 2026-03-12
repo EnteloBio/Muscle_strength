@@ -1,0 +1,114 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import 'tailwindcss';
+
+@theme {
+  --color-entelo-dark: #08090e;
+  --color-entelo-navy: #0d1117;
+  --color-entelo-blue: #00b4d8;
+  --color-entelo-teal: #0077b6;
+  --color-entelo-purple: #7c3aed;
+  --color-entelo-white: #f0f6fc;
+}
+
+:root {
+  --entelo-dark: #08090e;
+  --entelo-navy: #0d1117;
+  --entelo-blue: #00b4d8;
+  --entelo-teal: #0077b6;
+  --entelo-purple: #7c3aed;
+  --entelo-glow: #00b4d840;
+  --entelo-white: #f0f6fc;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--entelo-dark);
+  color: var(--entelo-white);
+}
+
+.glass-panel {
+  background: linear-gradient(145deg, rgba(13, 17, 23, 0.76), rgba(8, 9, 14, 0.72));
+  border: 1px solid rgba(240, 246, 252, 0.16);
+  backdrop-filter: blur(18px);
+  border-radius: 1.25rem;
+  box-shadow: 0 15px 50px rgba(0, 180, 216, 0.16);
+}
+
+.section-card {
+  border-radius: 0.9rem;
+  border: 1px solid rgba(240, 246, 252, 0.12);
+  background: rgba(13, 17, 23, 0.52);
+  padding: 1rem;
+}
+
+.section-title {
+  color: rgba(240, 246, 252, 0.66);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 0.35rem;
+}
+
+.input-base {
+  min-height: 48px;
+  width: 100%;
+  border: 1px solid rgba(240, 246, 252, 0.2);
+  border-radius: 0.75rem;
+  background: rgba(13, 17, 23, 0.6);
+  color: var(--entelo-white);
+  padding: 0.65rem 0.85rem;
+  outline: none;
+}
+
+.input-base:focus {
+  border-color: var(--entelo-blue);
+  box-shadow: 0 0 0 3px rgba(0, 180, 216, 0.2);
+}
+
+.error-text {
+  color: #f9a8d4;
+  font-size: 0.78rem;
+}
+
+.tap-btn {
+  transition: transform 140ms ease, filter 140ms ease;
+}
+
+.tap-btn:active {
+  transform: scale(0.98);
+  filter: brightness(1.05);
+}
+
+.action-btn {
+  min-height: 48px;
+  border-radius: 999px;
+  border: 1px solid rgba(240, 246, 252, 0.24);
+  background: rgba(13, 17, 23, 0.55);
+  color: var(--entelo-white);
+  padding: 0.7rem 1rem;
+  font-weight: 600;
+}
+
+.icon-btn {
+  min-height: 48px;
+  min-width: 48px;
+  border-radius: 999px;
+  border: 1px solid rgba(240, 246, 252, 0.28);
+  background: rgba(13, 17, 23, 0.6);
+  color: var(--entelo-white);
+  font-size: 1.5rem;
+  line-height: 1;
+}
