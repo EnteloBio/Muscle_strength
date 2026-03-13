@@ -8,6 +8,8 @@ import { LoadingScreen } from './pages/LoadingScreen'
 import { ProfileScreen } from './pages/ProfileScreen'
 import { ResultsScreen } from './pages/ResultsScreen'
 import { WelcomeScreen } from './pages/WelcomeScreen'
+import enteloIcon from '../logos/Icon Black.svg'
+import enteloLogo from '../logos/Logo Black.svg'
 
 function App() {
   const currentScreen = useGameStore((state) => state.currentScreen)
@@ -43,14 +45,15 @@ function App() {
       {!captureMode ? <ParticleBackground /> : null}
 
       {currentScreen !== 'welcome' ? (
-        <div className="pointer-events-none absolute left-4 top-4 z-30 text-xs tracking-[0.25em] text-entelo-white/55">
-          ENTELO BIO
+        <div className="pointer-events-none absolute left-4 top-4 z-30 flex items-center gap-3 rounded-full border border-entelo-white/25 bg-entelo-navy/85 px-5 py-3 shadow-[0_0_36px_rgba(0,180,216,0.22)] backdrop-blur-sm">
+          <img src={enteloIcon} alt="" className="entelo-logo-icon h-7" />
+          <img src={enteloLogo} alt="Entelo Bio" className="entelo-logo-wordmark h-7" />
         </div>
       ) : null}
 
       <button
         type="button"
-        className="tap-btn absolute right-4 top-4 z-30 rounded-full border border-entelo-white/20 bg-entelo-navy/50 px-3 py-2 text-xs text-entelo-white/70"
+        className="tap-btn absolute right-4 top-4 z-30 rounded-full border border-entelo-white/20 bg-entelo-navy/60 px-3 py-2 text-xs text-entelo-white/80"
         onClick={() => {
           resetGame()
           setScreen('welcome')

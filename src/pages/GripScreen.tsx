@@ -115,7 +115,7 @@ export function GripScreen() {
 
           <button
             type="button"
-            className="tap-btn min-h-12 rounded-full bg-gradient-to-r from-entelo-blue to-entelo-teal px-4 py-3 font-semibold text-entelo-dark disabled:opacity-40"
+            className="tap-btn btn-primary px-4 py-3 disabled:opacity-40"
             onClick={onCalculate}
             disabled={gripReadings.length === 0}
           >

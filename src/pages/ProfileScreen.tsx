@@ -137,7 +137,7 @@ export function ProfileScreen() {
 
         <button
           type="button"
-          className="tap-btn mt-8 min-h-12 w-full rounded-full bg-gradient-to-r from-entelo-blue to-entelo-teal px-6 py-3 font-semibold text-entelo-dark"
+          className="tap-btn btn-primary mt-8 w-full px-6 py-3"
           onClick={onNext}
         >
           NEXT →

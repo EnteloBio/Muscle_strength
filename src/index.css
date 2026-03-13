@@ -3,20 +3,21 @@
 
 @theme {
   --color-entelo-dark: #08090e;
-  --color-entelo-navy: #0d1117;
+  --color-entelo-navy: #0b1220;
   --color-entelo-blue: #00b4d8;
-  --color-entelo-teal: #0077b6;
+  --color-entelo-teal: #00a3d4;
   --color-entelo-purple: #7c3aed;
   --color-entelo-white: #f0f6fc;
 }
 
 :root {
   --entelo-dark: #08090e;
-  --entelo-navy: #0d1117;
+  --entelo-navy: #0b1220;
+  --entelo-navy-2: #101b30;
   --entelo-blue: #00b4d8;
-  --entelo-teal: #0077b6;
+  --entelo-teal: #00a3d4;
   --entelo-purple: #7c3aed;
-  --entelo-glow: #00b4d840;
+  --entelo-glow: #00b4d855;
   --entelo-white: #f0f6fc;
 }
 
@@ -35,29 +36,39 @@ body,
 
 body {
   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: var(--entelo-dark);
+  background:
+    radial-gradient(1200px 700px at 8% -10%, rgba(0, 180, 216, 0.2), transparent 55%),
+    radial-gradient(1000px 600px at 90% 110%, rgba(124, 58, 237, 0.16), transparent 60%),
+    linear-gradient(180deg, #06080f 0%, var(--entelo-dark) 100%);
   color: var(--entelo-white);
 }
 
 .glass-panel {
-  background: linear-gradient(145deg, rgba(13, 17, 23, 0.76), rgba(8, 9, 14, 0.72));
-  border: 1px solid rgba(240, 246, 252, 0.16);
-  backdrop-filter: blur(18px);
+  background:
+    linear-gradient(135deg, rgba(11, 18, 32, 0.74), rgba(8, 9, 14, 0.82)),
+    linear-gradient(180deg, rgba(0, 180, 216, 0.08), rgba(124, 58, 237, 0.06));
+  border: 1px solid rgba(240, 246, 252, 0.14);
+  backdrop-filter: blur(20px);
   border-radius: 1.25rem;
-  box-shadow: 0 15px 50px rgba(0, 180, 216, 0.16);
+  box-shadow:
+    0 24px 80px rgba(0, 9, 25, 0.52),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 0 0 1px rgba(0, 180, 216, 0.12);
 }
 
 .section-card {
-  border-radius: 0.9rem;
-  border: 1px solid rgba(240, 246, 252, 0.12);
-  background: rgba(13, 17, 23, 0.52);
+  border-radius: 1rem;
+  border: 1px solid rgba(240, 246, 252, 0.14);
+  background:
+    linear-gradient(180deg, rgba(16, 27, 48, 0.56), rgba(11, 18, 32, 0.52));
   padding: 1rem;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
 .section-title {
-  color: rgba(240, 246, 252, 0.66);
+  color: rgba(240, 246, 252, 0.68);
   font-size: 0.75rem;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   margin-bottom: 0.35rem;
 }
@@ -65,17 +76,21 @@ body {
 .input-base {
   min-height: 48px;
   width: 100%;
-  border: 1px solid rgba(240, 246, 252, 0.2);
+  border: 1px solid rgba(240, 246, 252, 0.22);
   border-radius: 0.75rem;
-  background: rgba(13, 17, 23, 0.6);
+  background: linear-gradient(180deg, rgba(16, 27, 48, 0.58), rgba(11, 18, 32, 0.6));
   color: var(--entelo-white);
   padding: 0.65rem 0.85rem;
   outline: none;
+  transition: border-color 140ms ease, box-shadow 140ms ease, background 140ms ease;
 }
 
 .input-base:focus {
   border-color: var(--entelo-blue);
-  box-shadow: 0 0 0 3px rgba(0, 180, 216, 0.2);
+  background: linear-gradient(180deg, rgba(16, 27, 48, 0.76), rgba(11, 18, 32, 0.74));
+  box-shadow:
+    0 0 0 3px rgba(0, 180, 216, 0.18),
+    0 0 24px rgba(0, 180, 216, 0.24);
 }
 
 .error-text {
@@ -84,7 +99,7 @@ body {
 }
 
 .tap-btn {
-  transition: transform 140ms ease, filter 140ms ease;
+  transition: transform 140ms ease, filter 140ms ease, box-shadow 180ms ease;
 }
 
 .tap-btn:active {
@@ -96,19 +111,60 @@ body {
   min-height: 48px;
   border-radius: 999px;
   border: 1px solid rgba(240, 246, 252, 0.24);
-  background: rgba(13, 17, 23, 0.55);
+  background: linear-gradient(180deg, rgba(16, 27, 48, 0.76), rgba(11, 18, 32, 0.75));
   color: var(--entelo-white);
   padding: 0.7rem 1rem;
   font-weight: 600;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.action-btn:hover {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 0 0 1px rgba(0, 180, 216, 0.2),
+    0 0 22px rgba(0, 180, 216, 0.2);
+}
+
+.btn-primary {
+  min-height: 48px;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 180, 216, 0.5);
+  background: linear-gradient(95deg, var(--entelo-blue), var(--entelo-teal), #4f8fe8);
+  color: #031225;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  box-shadow:
+    0 10px 24px rgba(0, 180, 216, 0.3),
+    0 0 0 1px rgba(0, 180, 216, 0.25);
+}
+
+.btn-primary:hover {
+  box-shadow:
+    0 14px 34px rgba(0, 180, 216, 0.35),
+    0 0 26px rgba(0, 180, 216, 0.34);
 }
 
 .icon-btn {
   min-height: 48px;
   min-width: 48px;
   border-radius: 999px;
-  border: 1px solid rgba(240, 246, 252, 0.28);
-  background: rgba(13, 17, 23, 0.6);
+  border: 1px solid rgba(240, 246, 252, 0.3);
+  background: linear-gradient(180deg, rgba(16, 27, 48, 0.7), rgba(11, 18, 32, 0.75));
   color: var(--entelo-white);
   font-size: 1.5rem;
   line-height: 1;
+}
+
+.entelo-logo-wordmark {
+  display: block;
+  width: auto;
+  filter: invert(1) saturate(0) brightness(1.18);
+  opacity: 1;
+}
+
+.entelo-logo-icon {
+  display: block;
+  width: auto;
+  filter: brightness(1.45) saturate(1.18);
+  opacity: 1;
 }

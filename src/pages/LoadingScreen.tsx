@@ -36,7 +36,7 @@ export function LoadingScreen() {
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.5 }}
-          className="mt-8 text-7xl font-bold text-entelo-blue"
+          className="mt-8 bg-gradient-to-r from-entelo-blue to-entelo-purple bg-clip-text text-7xl font-bold text-transparent"
         >
           {ticker}
         </motion.div>
