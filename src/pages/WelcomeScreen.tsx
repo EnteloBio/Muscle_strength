@@ -9,7 +9,7 @@ export function WelcomeScreen() {
     <section className="mx-auto flex h-full w-full max-w-7xl items-center justify-center px-5 py-8 md:px-10">
       <div className="glass-panel w-full max-w-5xl p-10 text-center md:p-14 lg:p-16">
         <div className="mb-10 flex justify-center">
-          <div className="rounded-2xl border border-entelo-white/25 bg-entelo-navy/82 px-8 py-6 shadow-[0_0_54px_rgba(0,180,216,0.26)] md:px-12 md:py-8">
+          <div className="rounded-2xl border border-entelo-white/20 bg-entelo-navy/90 px-8 py-6 shadow-[0_0_40px_rgba(0,180,216,0.2)] md:px-12 md:py-8">
             <img
               src={enteloLogo}
               alt="Entelo Bio"
@@ -22,7 +22,7 @@ export function WelcomeScreen() {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
-          className="mb-6 bg-gradient-to-r from-entelo-blue via-[#5cb8ff] to-entelo-purple bg-clip-text text-6xl font-bold leading-[0.92] text-transparent md:text-8xl lg:text-9xl"
+          className="mb-6 text-6xl font-bold leading-[0.92] text-entelo-white md:text-8xl lg:text-9xl"
         >
           DECODE YOUR STRENGTH
         </motion.h1>
@@ -36,6 +36,10 @@ export function WelcomeScreen() {
           How does your grip compare? Find out your muscle age, celebrity match, and cell
           identity.
         </motion.p>
+
+        <p className="mx-auto mb-8 max-w-3xl text-sm uppercase tracking-[0.16em] text-entelo-white/70 md:text-base">
+          Biology unveiled - medicines redefined
+        </p>
 
         <motion.button
           type="button"

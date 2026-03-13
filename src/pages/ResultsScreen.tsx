@@ -21,6 +21,9 @@ export function ResultsScreen() {
   const [showEmailModal, setShowEmailModal] = useState(false)
   const [email, setEmail] = useState(userProfile?.email ?? '')
   const [consent, setConsent] = useState(false)
+  const [isSending, setIsSending] = useState(false)
+  const [sendError, setSendError] = useState('')
+  const [sendSuccess, setSendSuccess] = useState('')
 
   useEffect(() => {
     const timer = window.setInterval(() => setFactIdx((idx) => (idx + 1) % factoids.length), 8000)
@@ -44,9 +47,26 @@ export function ResultsScreen() {
     )
   }
 
-  const submitEmail = () => {
-    console.log('EMAIL_RESULTS_PAYLOAD', {
-      email,
+  const submitEmail = async () => {
+    const trimmedEmail = email.trim()
+    const emailApiUrl = import.meta.env.VITE_EMAIL_API_URL?.trim()
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+    setSendError('')
+    setSendSuccess('')
+
+    if (!emailRegex.test(trimmedEmail)) {
+      setSendError('Please enter a valid email address.')
+      return
+    }
+
+    if (!emailApiUrl) {
+      setSendError('Email service is not configured. Set VITE_EMAIL_API_URL in your environment.')
+      return
+    }
+
+    const payload = {
+      email: trimmedEmail,
       consent,
       name: userProfile.name,
       grip: result.bestGrip,
@@ -54,8 +74,31 @@ export function ResultsScreen() {
       muscleAge: display.muscleAge,
       tier: result.celebrityTier.name,
       cellType: result.cellType.name,
-    })
-    setShowEmailModal(false)
+    }
+
+    try {
+      setIsSending(true)
+      const response = await fetch(emailApiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+
+      if (!response.ok) {
+        throw new Error(`Request failed with status ${response.status}`)
+      }
+
+      setSendSuccess('Results sent successfully.')
+      window.setTimeout(() => {
+        setShowEmailModal(false)
+        setSendSuccess('')
+      }, 1200)
+    } catch (error) {
+      console.error('EMAIL_RESULTS_ERROR', error)
+      setSendError('Could not send email right now. Please try again.')
+    } finally {
+      setIsSending(false)
+    }
   }
 
   return (
@@ -66,7 +109,7 @@ export function ResultsScreen() {
         className="glass-panel h-full w-full overflow-y-auto p-6 text-left md:p-8"
       >
         <header className="mb-5 border-b border-entelo-white/10 pb-4">
-          <h2 className="bg-gradient-to-r from-entelo-blue via-[#6bc3ff] to-entelo-purple bg-clip-text text-3xl font-bold text-transparent md:text-5xl">
+          <h2 className="bg-gradient-to-r from-entelo-blue via-[#66d5ff] to-entelo-blue bg-clip-text text-3xl font-bold text-transparent md:text-5xl">
             🧬 YOUR STRENGTH DECODED
           </h2>
           <p className="mt-2 text-lg text-entelo-white/80">{userProfile.name} • {new Date().toLocaleDateString()}</p>
@@ -151,9 +194,24 @@ export function ResultsScreen() {
               <input type="checkbox" checked={consent} onChange={(event) => setConsent(event.target.checked)} className="mt-1" />
               I'd like to hear about Entelo Bio's research.
             </label>
+            {sendError ? <p className="mt-3 text-sm text-rose-300">{sendError}</p> : null}
+            {sendSuccess ? <p className="mt-3 text-sm text-emerald-300">{sendSuccess}</p> : null}
             <div className="mt-4 flex gap-2">
-              <button type="button" className="tap-btn action-btn" onClick={() => setShowEmailModal(false)}>Cancel</button>
-              <button type="button" className="tap-btn btn-primary px-4" onClick={submitEmail}>Send</button>
+              <button
+                type="button"
+                className="tap-btn action-btn"
+                onClick={() => {
+                  setSendError('')
+                  setSendSuccess('')
+                  setShowEmailModal(false)
+                }}
+                disabled={isSending}
+              >
+                Cancel
+              </button>
+              <button type="button" className="tap-btn btn-primary px-4" onClick={submitEmail} disabled={isSending}>
+                {isSending ? 'Sending...' : 'Send'}
+              </button>
             </div>
           </div>
         </div>

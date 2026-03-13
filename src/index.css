@@ -2,23 +2,23 @@
 @import 'tailwindcss';
 
 @theme {
-  --color-entelo-dark: #08090e;
-  --color-entelo-navy: #0b1220;
+  --color-entelo-dark: #0a0a0f;
+  --color-entelo-navy: #11131a;
   --color-entelo-blue: #00b4d8;
-  --color-entelo-teal: #00a3d4;
-  --color-entelo-purple: #7c3aed;
-  --color-entelo-white: #f0f6fc;
+  --color-entelo-teal: #0099cf;
+  --color-entelo-purple: #425d8f;
+  --color-entelo-white: #ffffff;
 }
 
 :root {
-  --entelo-dark: #08090e;
-  --entelo-navy: #0b1220;
-  --entelo-navy-2: #101b30;
+  --entelo-dark: #0a0a0f;
+  --entelo-navy: #11131a;
+  --entelo-navy-2: #171b27;
   --entelo-blue: #00b4d8;
-  --entelo-teal: #00a3d4;
-  --entelo-purple: #7c3aed;
-  --entelo-glow: #00b4d855;
-  --entelo-white: #f0f6fc;
+  --entelo-teal: #0099cf;
+  --entelo-purple: #425d8f;
+  --entelo-glow: #00b4d844;
+  --entelo-white: #ffffff;
 }
 
 * {
@@ -37,37 +37,37 @@ body,
 body {
   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   background:
-    radial-gradient(1200px 700px at 8% -10%, rgba(0, 180, 216, 0.2), transparent 55%),
-    radial-gradient(1000px 600px at 90% 110%, rgba(124, 58, 237, 0.16), transparent 60%),
-    linear-gradient(180deg, #06080f 0%, var(--entelo-dark) 100%);
+    radial-gradient(1200px 700px at 10% -5%, rgba(0, 180, 216, 0.15), transparent 58%),
+    radial-gradient(900px 500px at 95% 105%, rgba(0, 180, 216, 0.08), transparent 62%),
+    linear-gradient(180deg, #07080d 0%, var(--entelo-dark) 100%);
   color: var(--entelo-white);
 }
 
 .glass-panel {
   background:
-    linear-gradient(135deg, rgba(11, 18, 32, 0.74), rgba(8, 9, 14, 0.82)),
-    linear-gradient(180deg, rgba(0, 180, 216, 0.08), rgba(124, 58, 237, 0.06));
-  border: 1px solid rgba(240, 246, 252, 0.14);
-  backdrop-filter: blur(20px);
+    linear-gradient(135deg, rgba(17, 19, 26, 0.8), rgba(10, 10, 15, 0.88)),
+    linear-gradient(180deg, rgba(0, 180, 216, 0.05), rgba(0, 180, 216, 0.02));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(16px);
   border-radius: 1.25rem;
   box-shadow:
-    0 24px 80px rgba(0, 9, 25, 0.52),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06),
-    0 0 0 1px rgba(0, 180, 216, 0.12);
+    0 24px 64px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 0 0 1px rgba(0, 180, 216, 0.08);
 }
 
 .section-card {
   border-radius: 1rem;
-  border: 1px solid rgba(240, 246, 252, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   background:
-    linear-gradient(180deg, rgba(16, 27, 48, 0.56), rgba(11, 18, 32, 0.52));
+    linear-gradient(180deg, rgba(23, 27, 39, 0.56), rgba(17, 19, 26, 0.6));
   padding: 1rem;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
 .section-title {
-  color: rgba(240, 246, 252, 0.68);
-  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.82rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   margin-bottom: 0.35rem;
@@ -76,9 +76,9 @@ body {
 .input-base {
   min-height: 48px;
   width: 100%;
-  border: 1px solid rgba(240, 246, 252, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 0.75rem;
-  background: linear-gradient(180deg, rgba(16, 27, 48, 0.58), rgba(11, 18, 32, 0.6));
+  background: linear-gradient(180deg, rgba(23, 27, 39, 0.66), rgba(17, 19, 26, 0.7));
   color: var(--entelo-white);
   padding: 0.65rem 0.85rem;
   outline: none;
@@ -87,7 +87,7 @@ body {
 
 .input-base:focus {
   border-color: var(--entelo-blue);
-  background: linear-gradient(180deg, rgba(16, 27, 48, 0.76), rgba(11, 18, 32, 0.74));
+  background: linear-gradient(180deg, rgba(23, 27, 39, 0.85), rgba(17, 19, 26, 0.85));
   box-shadow:
     0 0 0 3px rgba(0, 180, 216, 0.18),
     0 0 24px rgba(0, 180, 216, 0.24);
@@ -110,8 +110,8 @@ body {
 .action-btn {
   min-height: 48px;
   border-radius: 999px;
-  border: 1px solid rgba(240, 246, 252, 0.24);
-  background: linear-gradient(180deg, rgba(16, 27, 48, 0.76), rgba(11, 18, 32, 0.75));
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: linear-gradient(180deg, rgba(23, 27, 39, 0.84), rgba(17, 19, 26, 0.84));
   color: var(--entelo-white);
   padding: 0.7rem 1rem;
   font-weight: 600;
@@ -129,7 +129,7 @@ body {
   min-height: 48px;
   border-radius: 999px;
   border: 1px solid rgba(0, 180, 216, 0.5);
-  background: linear-gradient(95deg, var(--entelo-blue), var(--entelo-teal), #4f8fe8);
+  background: linear-gradient(90deg, #00b4d8, #00a3d4);
   color: #031225;
   font-weight: 700;
   letter-spacing: 0.02em;
@@ -148,8 +148,8 @@ body {
   min-height: 48px;
   min-width: 48px;
   border-radius: 999px;
-  border: 1px solid rgba(240, 246, 252, 0.3);
-  background: linear-gradient(180deg, rgba(16, 27, 48, 0.7), rgba(11, 18, 32, 0.75));
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: linear-gradient(180deg, rgba(23, 27, 39, 0.8), rgba(17, 19, 26, 0.86));
   color: var(--entelo-white);
   font-size: 1.5rem;
   line-height: 1;
@@ -158,7 +158,7 @@ body {
 .entelo-logo-wordmark {
   display: block;
   width: auto;
-  filter: invert(1) saturate(0) brightness(1.18);
+  filter: invert(1) saturate(0) brightness(1.12);
   opacity: 1;
 }
 
