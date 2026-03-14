@@ -1,5 +1,7 @@
 # Decode Your Strength
 
+**Live app:** [https://muscle-strength-psi.vercel.app/](https://muscle-strength-psi.vercel.app/)
+
 Conference booth web app for Entelo Bio.
 
 Visitors enter a grip dynamometer score and receive:
