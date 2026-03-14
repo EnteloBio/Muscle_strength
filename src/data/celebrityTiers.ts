@@ -9,19 +9,19 @@ const sharedTiers = [
   },
   {
     name: 'Elite',
-    minPercentile: 75,
+    minPercentile: 85,
     icon: '⚡',
     flavourText: 'Action-hero grip. Very impressive.',
   },
   {
     name: 'Solid',
-    minPercentile: 50,
+    minPercentile: 65,
     icon: '🛡️',
     flavourText: 'Solid and dependable. Thor would approve.',
   },
   {
     name: 'Average',
-    minPercentile: 25,
+    minPercentile: 35,
     icon: '👌',
     flavourText: 'Right in the sweet spot. Totally respectable.',
   },

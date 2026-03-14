@@ -39,6 +39,7 @@ export type GripResult = {
 export type LeaderboardEntry = {
   name: string
   company: string
+  sex: Sex | 'unspecified'
   grip: number
   percentile: number
   timestamp: number

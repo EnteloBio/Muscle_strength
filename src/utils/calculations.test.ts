@@ -34,7 +34,8 @@ describe('calculations', () => {
 
   it('maps percentile to expected celebrity tier', () => {
     expect(getCelebrityTier(96, 'male').name).toBe('Legendary')
-    expect(getCelebrityTier(80, 'female').name).toBe('Elite')
+    expect(getCelebrityTier(80, 'female').name).toBe('Solid')
+    expect(getCelebrityTier(88, 'female').name).toBe('Elite')
     expect(getCelebrityTier(22, 'female').name).toBe('Below Average')
   })
 
@@ -54,5 +55,11 @@ describe('calculations', () => {
     expect(result.muscleAge).toBeLessThanOrEqual(85)
     expect(result.celebrityTier.name.length).toBeGreaterThan(0)
     expect(result.cellType.name.length).toBeGreaterThan(0)
+  })
+
+  it('classifies female 35kg at age 32 below elite tier', () => {
+    const result = calculateResult(35, 32, 'female')
+    expect(Math.round(result.percentile)).toBe(78)
+    expect(result.celebrityTier.name).toBe('Solid')
   })
 })

@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { calculateResult } from '../utils/calculations'
-import type { GripReading, GripResult, LeaderboardEntry, Screen, UserProfile } from '../types'
+import type { GripReading, GripResult, LeaderboardEntry, Screen, Sex, UserProfile } from '../types'
 
 type GameState = {
   currentScreen: Screen
@@ -19,13 +19,30 @@ type GameState = {
 
 const STORAGE_KEY = 'decode-strength-leaderboard'
 
+const isSex = (value: unknown): value is Sex => value === 'male' || value === 'female'
+
 const readLeaderboard = (): LeaderboardEntry[] => {
   if (typeof window === 'undefined') return []
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY)
     if (!raw) return []
-    const parsed = JSON.parse(raw) as LeaderboardEntry[]
-    return Array.isArray(parsed) ? parsed : []
+    const parsed = JSON.parse(raw) as unknown
+    if (!Array.isArray(parsed)) return []
+
+    return parsed
+      .filter((entry): entry is Record<string, unknown> => typeof entry === 'object' && entry !== null)
+      .map((entry) => {
+        const sex: LeaderboardEntry['sex'] = isSex(entry.sex) ? entry.sex : 'unspecified'
+        return {
+          name: String(entry.name ?? 'Anonymous'),
+          company: String(entry.company ?? ''),
+          sex,
+          grip: Number(entry.grip ?? 0),
+          percentile: Number(entry.percentile ?? 0),
+          timestamp: Number(entry.timestamp ?? Date.now()),
+        }
+      })
+      .filter((entry) => Number.isFinite(entry.grip) && Number.isFinite(entry.percentile))
   } catch {
     return []
   }
@@ -68,6 +85,7 @@ export const useGameStore = create<GameState>((set, get) => ({
     const entry: LeaderboardEntry = {
       name: userProfile.name.trim(),
       company: userProfile.company?.trim() ?? '',
+      sex: userProfile.sex,
       grip: result.bestGrip,
       percentile: Math.round(result.percentile),
       timestamp: Date.now(),

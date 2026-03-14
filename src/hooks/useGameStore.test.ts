@@ -74,6 +74,7 @@ describe('useGameStore', () => {
     expect(leaderboard).toHaveLength(2)
     expect(leaderboard[0].name).toBe('B')
     expect(leaderboard[1].name).toBe('A')
+    expect(leaderboard[0].sex).toBe('male')
   })
 
   it('clears leaderboard and keeps state reset behavior', () => {
