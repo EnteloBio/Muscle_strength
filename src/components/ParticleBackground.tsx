@@ -10,7 +10,7 @@ type Particle = {
   color: string
 }
 
-const COLORS = ['#00B4D8', '#0077B6', '#7C3AED']
+const COLORS = ['#8b7db8', '#6b5d98', '#a594d0']
 const random = (min: number, max: number): number => Math.random() * (max - min) + min
 
 export function ParticleBackground() {
@@ -48,7 +48,7 @@ export function ParticleBackground() {
     }))
 
     const draw = () => {
-      ctx.fillStyle = '#08090E'
+      ctx.fillStyle = '#0d1525'
       ctx.fillRect(0, 0, window.innerWidth, window.innerHeight)
 
       for (let i = 0; i < particles.length; i += 1) {
@@ -85,8 +85,8 @@ export function ParticleBackground() {
           const distance = Math.sqrt(dx * dx + dy * dy)
           if (distance > 110) continue
 
-          const alpha = ((110 - distance) / 110) * 0.25
-          ctx.strokeStyle = `rgba(0, 180, 216, ${alpha.toFixed(3)})`
+          const alpha = ((110 - distance) / 110) * 0.2
+          ctx.strokeStyle = `rgba(139, 125, 184, ${alpha.toFixed(3)})`
           ctx.lineWidth = 0.8
           ctx.beginPath()
           ctx.moveTo(a.x, a.y)

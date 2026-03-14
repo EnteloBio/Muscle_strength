@@ -109,7 +109,7 @@ export function ResultsScreen() {
         className="glass-panel h-full w-full overflow-y-auto p-6 text-left md:p-8"
       >
         <header className="mb-5 border-b border-entelo-white/10 pb-4">
-          <h2 className="bg-gradient-to-r from-entelo-blue via-[#66d5ff] to-entelo-blue bg-clip-text text-3xl font-bold text-transparent md:text-5xl">
+          <h2 className="bg-gradient-to-r from-entelo-blue via-entelo-teal to-entelo-blue bg-clip-text text-3xl font-bold text-transparent md:text-5xl">
             🧬 YOUR STRENGTH DECODED
           </h2>
           <p className="mt-2 text-lg text-entelo-white/80">{userProfile.name} • {new Date().toLocaleDateString()}</p>
@@ -146,7 +146,7 @@ export function ResultsScreen() {
             <p className="text-lg text-entelo-white/95">Grip: {result.bestGrip.toFixed(1)} kg</p>
             <p className="text-lg text-entelo-white/95">Percentile: {display.percentile}th</p>
             <div className="mt-3 h-3 w-full overflow-hidden rounded-full bg-entelo-white/10">
-              <div className="h-full rounded-full bg-gradient-to-r from-entelo-teal to-entelo-blue" style={{ width: `${display.percentile}%` }} />
+              <div className="h-full rounded-full bg-gradient-to-r from-entelo-purple to-entelo-blue" style={{ width: `${display.percentile}%` }} />
             </div>
           </article>
 

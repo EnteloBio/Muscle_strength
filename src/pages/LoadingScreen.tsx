@@ -19,7 +19,7 @@ export function LoadingScreen() {
     }, 3000)
 
     if ((result?.percentile ?? 0) >= 75) {
-      confetti({ particleCount: 140, spread: 90, colors: ['#00B4D8', '#0077B6', '#7C3AED'] })
+      confetti({ particleCount: 140, spread: 90, colors: ['#8b7db8', '#a594d0', '#6b5d98'] })
     }
 
     return () => window.clearTimeout(t)
@@ -36,7 +36,7 @@ export function LoadingScreen() {
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.5 }}
-          className="mt-8 bg-gradient-to-r from-entelo-blue to-entelo-purple bg-clip-text text-7xl font-bold text-transparent"
+          className="mt-8 bg-gradient-to-r from-entelo-blue to-entelo-teal bg-clip-text text-7xl font-bold text-transparent"
         >
           {ticker}
         </motion.div>

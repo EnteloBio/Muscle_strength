@@ -9,7 +9,7 @@ export function WelcomeScreen() {
     <section className="mx-auto flex h-full w-full max-w-7xl items-center justify-center px-5 py-8 md:px-10">
       <div className="glass-panel w-full max-w-5xl p-10 text-center md:p-14 lg:p-16">
         <div className="mb-10 flex justify-center">
-          <div className="rounded-2xl border border-entelo-white/20 bg-entelo-navy/90 px-8 py-6 shadow-[0_0_40px_rgba(0,180,216,0.2)] md:px-12 md:py-8">
+          <div className="rounded-2xl border border-entelo-white/20 bg-entelo-navy/90 px-8 py-6 shadow-[0_0_40px_rgba(139,125,184,0.2)] md:px-12 md:py-8">
             <img
               src={enteloLogo}
               alt="Entelo Bio"
@@ -45,7 +45,7 @@ export function WelcomeScreen() {
           type="button"
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.98 }}
-          animate={{ boxShadow: ['0 0 0px #00B4D855', '0 0 34px #00B4D899', '0 0 0px #00B4D855'] }}
+          animate={{ boxShadow: ['0 0 0px #8b7db855', '0 0 34px #8b7db899', '0 0 0px #8b7db855'] }}
           transition={{ duration: 2.2, repeat: Infinity }}
           className="tap-btn btn-primary px-10 py-4 text-lg md:px-12"
           onClick={() => setScreen('profile')}

@@ -71,7 +71,7 @@ export function LeaderboardScreen() {
                 key={`${title}-${entry.name}-${entry.timestamp}`}
                 className={`grid grid-cols-[42px_minmax(0,1fr)_90px_74px] items-center gap-2 rounded-lg border px-3 py-2 text-sm ${
                   highlighted
-                    ? 'border-entelo-blue bg-entelo-blue/10 shadow-[0_0_18px_#00B4D855]'
+                    ? 'border-entelo-blue bg-entelo-blue/10 shadow-[0_0_18px_rgba(139,125,184,0.35)]'
                     : 'border-entelo-white/10 bg-entelo-navy/35'
                 }`}
               >
@@ -93,7 +93,7 @@ export function LeaderboardScreen() {
   return (
     <section className="mx-auto h-full w-full max-w-5xl px-4 py-4">
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="glass-panel h-full overflow-y-auto p-6 md:p-8">
-        <h2 className="bg-gradient-to-r from-entelo-blue via-[#74cbff] to-entelo-blue bg-clip-text text-2xl font-semibold text-transparent md:text-3xl">
+        <h2 className="bg-gradient-to-r from-entelo-blue via-entelo-teal to-entelo-blue bg-clip-text text-2xl font-semibold text-transparent md:text-3xl">
           🏆 TODAY'S STRONGEST GRIPS
         </h2>
         <p className="mt-1 text-sm text-entelo-white/70">

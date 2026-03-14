@@ -2,23 +2,23 @@
 @import 'tailwindcss';
 
 @theme {
-  --color-entelo-dark: #0a0a0f;
-  --color-entelo-navy: #11131a;
-  --color-entelo-blue: #00b4d8;
-  --color-entelo-teal: #0099cf;
-  --color-entelo-purple: #425d8f;
-  --color-entelo-white: #ffffff;
+  --color-entelo-dark: #0d1525;
+  --color-entelo-navy: #141e3a;
+  --color-entelo-blue: #8b7db8;
+  --color-entelo-teal: #a594d0;
+  --color-entelo-purple: #6b5d98;
+  --color-entelo-white: #e2d8c8;
 }
 
 :root {
-  --entelo-dark: #0a0a0f;
-  --entelo-navy: #11131a;
-  --entelo-navy-2: #171b27;
-  --entelo-blue: #00b4d8;
-  --entelo-teal: #0099cf;
-  --entelo-purple: #425d8f;
-  --entelo-glow: #00b4d844;
-  --entelo-white: #ffffff;
+  --entelo-dark: #0d1525;
+  --entelo-navy: #141e3a;
+  --entelo-navy-2: #1a2544;
+  --entelo-blue: #8b7db8;
+  --entelo-teal: #a594d0;
+  --entelo-purple: #6b5d98;
+  --entelo-glow: #8b7db844;
+  --entelo-white: #e2d8c8;
 }
 
 * {
@@ -37,36 +37,36 @@ body,
 body {
   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   background:
-    radial-gradient(1200px 700px at 10% -5%, rgba(0, 180, 216, 0.15), transparent 58%),
-    radial-gradient(900px 500px at 95% 105%, rgba(0, 180, 216, 0.08), transparent 62%),
-    linear-gradient(180deg, #07080d 0%, var(--entelo-dark) 100%);
+    radial-gradient(1100px 700px at 50% 40%, rgba(20, 30, 58, 0.95), transparent 70%),
+    radial-gradient(800px 500px at 15% 0%, rgba(139, 125, 184, 0.1), transparent 55%),
+    linear-gradient(180deg, #0a1020 0%, var(--entelo-dark) 100%);
   color: var(--entelo-white);
 }
 
 .glass-panel {
   background:
-    linear-gradient(135deg, rgba(17, 19, 26, 0.8), rgba(10, 10, 15, 0.88)),
-    linear-gradient(180deg, rgba(0, 180, 216, 0.05), rgba(0, 180, 216, 0.02));
-  border: 1px solid rgba(255, 255, 255, 0.12);
+    linear-gradient(135deg, rgba(20, 30, 58, 0.72), rgba(13, 21, 37, 0.82)),
+    linear-gradient(180deg, rgba(139, 125, 184, 0.06), rgba(107, 93, 152, 0.03));
+  border: 1px solid rgba(226, 216, 200, 0.12);
   backdrop-filter: blur(16px);
   border-radius: 1.25rem;
   box-shadow:
-    0 24px 64px rgba(0, 0, 0, 0.45),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05),
-    0 0 0 1px rgba(0, 180, 216, 0.08);
+    0 24px 64px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(226, 216, 200, 0.05),
+    0 0 0 1px rgba(139, 125, 184, 0.08);
 }
 
 .section-card {
   border-radius: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(226, 216, 200, 0.1);
   background:
-    linear-gradient(180deg, rgba(23, 27, 39, 0.56), rgba(17, 19, 26, 0.6));
+    linear-gradient(180deg, rgba(26, 37, 68, 0.52), rgba(20, 30, 58, 0.56));
   padding: 1rem;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  box-shadow: inset 0 1px 0 rgba(226, 216, 200, 0.03);
 }
 
 .section-title {
-  color: rgba(255, 255, 255, 0.72);
+  color: rgba(226, 216, 200, 0.7);
   font-size: 0.82rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -76,9 +76,9 @@ body {
 .input-base {
   min-height: 48px;
   width: 100%;
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(226, 216, 200, 0.18);
   border-radius: 0.75rem;
-  background: linear-gradient(180deg, rgba(23, 27, 39, 0.66), rgba(17, 19, 26, 0.7));
+  background: linear-gradient(180deg, rgba(26, 37, 68, 0.6), rgba(20, 30, 58, 0.65));
   color: var(--entelo-white);
   padding: 0.65rem 0.85rem;
   outline: none;
@@ -87,14 +87,14 @@ body {
 
 .input-base:focus {
   border-color: var(--entelo-blue);
-  background: linear-gradient(180deg, rgba(23, 27, 39, 0.85), rgba(17, 19, 26, 0.85));
+  background: linear-gradient(180deg, rgba(26, 37, 68, 0.82), rgba(20, 30, 58, 0.8));
   box-shadow:
-    0 0 0 3px rgba(0, 180, 216, 0.18),
-    0 0 24px rgba(0, 180, 216, 0.24);
+    0 0 0 3px rgba(139, 125, 184, 0.18),
+    0 0 20px rgba(139, 125, 184, 0.2);
 }
 
 .error-text {
-  color: #f9a8d4;
+  color: #e8a0a0;
   font-size: 0.78rem;
 }
 
@@ -110,46 +110,46 @@ body {
 .action-btn {
   min-height: 48px;
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  background: linear-gradient(180deg, rgba(23, 27, 39, 0.84), rgba(17, 19, 26, 0.84));
+  border: 1px solid rgba(226, 216, 200, 0.18);
+  background: linear-gradient(180deg, rgba(26, 37, 68, 0.8), rgba(20, 30, 58, 0.8));
   color: var(--entelo-white);
   padding: 0.7rem 1rem;
   font-weight: 600;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  box-shadow: inset 0 1px 0 rgba(226, 216, 200, 0.05);
 }
 
 .action-btn:hover {
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.08),
-    0 0 0 1px rgba(0, 180, 216, 0.2),
-    0 0 22px rgba(0, 180, 216, 0.2);
+    inset 0 1px 0 rgba(226, 216, 200, 0.08),
+    0 0 0 1px rgba(139, 125, 184, 0.22),
+    0 0 18px rgba(139, 125, 184, 0.18);
 }
 
 .btn-primary {
   min-height: 48px;
   border-radius: 999px;
-  border: 1px solid rgba(0, 180, 216, 0.5);
-  background: linear-gradient(90deg, #00b4d8, #00a3d4);
-  color: #031225;
+  border: 1px solid rgba(139, 125, 184, 0.5);
+  background: linear-gradient(90deg, #8b7db8, #a594d0);
+  color: #0d1525;
   font-weight: 700;
   letter-spacing: 0.02em;
   box-shadow:
-    0 10px 24px rgba(0, 180, 216, 0.3),
-    0 0 0 1px rgba(0, 180, 216, 0.25);
+    0 10px 24px rgba(139, 125, 184, 0.28),
+    0 0 0 1px rgba(139, 125, 184, 0.2);
 }
 
 .btn-primary:hover {
   box-shadow:
-    0 14px 34px rgba(0, 180, 216, 0.35),
-    0 0 26px rgba(0, 180, 216, 0.34);
+    0 14px 34px rgba(139, 125, 184, 0.34),
+    0 0 24px rgba(139, 125, 184, 0.3);
 }
 
 .icon-btn {
   min-height: 48px;
   min-width: 48px;
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  background: linear-gradient(180deg, rgba(23, 27, 39, 0.8), rgba(17, 19, 26, 0.86));
+  border: 1px solid rgba(226, 216, 200, 0.22);
+  background: linear-gradient(180deg, rgba(26, 37, 68, 0.75), rgba(20, 30, 58, 0.8));
   color: var(--entelo-white);
   font-size: 1.5rem;
   line-height: 1;
@@ -158,13 +158,13 @@ body {
 .entelo-logo-wordmark {
   display: block;
   width: auto;
-  filter: invert(1) saturate(0) brightness(1.12);
+  filter: invert(1) saturate(0) brightness(0.92) sepia(0.15);
   opacity: 1;
 }
 
 .entelo-logo-icon {
   display: block;
   width: auto;
-  filter: brightness(1.45) saturate(1.18);
+  filter: invert(1) saturate(0) brightness(0.92) sepia(0.15);
   opacity: 1;
 }

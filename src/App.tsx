@@ -8,7 +8,6 @@ import { LoadingScreen } from './pages/LoadingScreen'
 import { ProfileScreen } from './pages/ProfileScreen'
 import { ResultsScreen } from './pages/ResultsScreen'
 import { WelcomeScreen } from './pages/WelcomeScreen'
-import enteloIcon from '../logos/Icon Black.svg'
 import enteloLogo from '../logos/Logo Black.svg'
 
 function App() {
@@ -45,8 +44,7 @@ function App() {
       {!captureMode ? <ParticleBackground /> : null}
 
       {currentScreen !== 'welcome' ? (
-        <div className="pointer-events-none absolute left-4 top-4 z-30 flex items-center gap-3 rounded-full border border-entelo-white/25 bg-entelo-navy/85 px-5 py-3 shadow-[0_0_36px_rgba(0,180,216,0.22)] backdrop-blur-sm">
-          <img src={enteloIcon} alt="" className="entelo-logo-icon h-7" />
+        <div className="pointer-events-none absolute left-4 top-4 z-30 flex items-center rounded-full border border-entelo-white/25 bg-entelo-navy/85 px-5 py-3 shadow-[0_0_36px_rgba(139,125,184,0.18)] backdrop-blur-sm">
           <img src={enteloLogo} alt="Entelo Bio" className="entelo-logo-wordmark h-7" />
         </div>
       ) : null}
