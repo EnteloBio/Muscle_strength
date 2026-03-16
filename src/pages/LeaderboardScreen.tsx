@@ -9,7 +9,9 @@ export function LeaderboardScreen() {
   const clearLeaderboard = useGameStore((state) => state.clearLeaderboard)
   const setScreen = useGameStore((state) => state.setScreen)
   const resetGame = useGameStore((state) => state.resetGame)
-  const [confirmReset, setConfirmReset] = useState(false)
+  const [showPinInput, setShowPinInput] = useState(false)
+  const [pin, setPin] = useState('')
+  const [pinError, setPinError] = useState(false)
 
   const ranked = useMemo(() => leaderboard.map((entry, index) => ({ ...entry, rank: index + 1 })), [leaderboard])
   const maleTop = useMemo(
@@ -124,21 +126,59 @@ export function LeaderboardScreen() {
         </div>
 
         <div className="mt-4 flex justify-end">
-          <button
-            type="button"
-            className="tap-btn text-xs text-entelo-white/70 underline"
-            onClick={() => {
-              if (confirmReset) {
-                clearLeaderboard()
-                setConfirmReset(false)
-              } else {
-                setConfirmReset(true)
-                window.setTimeout(() => setConfirmReset(false), 3000)
-              }
-            }}
-          >
-            {confirmReset ? 'Tap again to confirm reset' : 'RESET LEADERBOARD'}
-          </button>
+          {showPinInput ? (
+            <div className="flex items-center gap-2">
+              <input
+                type="password"
+                inputMode="numeric"
+                maxLength={4}
+                placeholder="PIN"
+                value={pin}
+                onChange={(e) => {
+                  setPin(e.target.value)
+                  setPinError(false)
+                }}
+                className="input-base w-20 text-center text-sm"
+                autoFocus
+              />
+              <button
+                type="button"
+                className="tap-btn text-xs text-entelo-white/70 underline"
+                onClick={() => {
+                  if (pin === '1234') {
+                    clearLeaderboard()
+                    setShowPinInput(false)
+                    setPin('')
+                    setPinError(false)
+                  } else {
+                    setPinError(true)
+                  }
+                }}
+              >
+                Confirm
+              </button>
+              <button
+                type="button"
+                className="tap-btn text-xs text-entelo-white/50"
+                onClick={() => {
+                  setShowPinInput(false)
+                  setPin('')
+                  setPinError(false)
+                }}
+              >
+                Cancel
+              </button>
+              {pinError ? <span className="text-xs text-rose-300">Wrong PIN</span> : null}
+            </div>
+          ) : (
+            <button
+              type="button"
+              className="tap-btn text-xs text-entelo-white/70 underline"
+              onClick={() => setShowPinInput(true)}
+            >
+              RESET LEADERBOARD
+            </button>
+          )}
         </div>
       </motion.div>
     </section>
