@@ -53,7 +53,15 @@ export function WelcomeScreen() {
           START THE TEST →
         </motion.button>
 
-        <p className="mt-10 text-sm text-entelo-white/65">Powered by science. Fuelled by curiosity.</p>
+        <button
+          type="button"
+          className="tap-btn action-btn mt-6 px-6 py-3 text-sm"
+          onClick={() => setScreen('leaderboard')}
+        >
+          🏆 VIEW LEADERBOARD
+        </button>
+
+        <p className="mt-8 text-sm text-entelo-white/65">Powered by science. Fuelled by curiosity.</p>
       </div>
     </section>
   )
