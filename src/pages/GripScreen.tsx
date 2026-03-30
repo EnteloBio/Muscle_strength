@@ -29,10 +29,21 @@ export function GripScreen() {
   return (
     <section className="mx-auto flex h-full w-full max-w-4xl items-center justify-center px-4 py-4">
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="glass-panel w-full max-w-3xl p-6 md:p-8">
-        <h2 className="text-2xl font-semibold md:text-3xl">Enter your grip strength</h2>
-        <p className="mt-2 text-sm text-entelo-white/70">
-          Squeeze the dynamometer with your dominant hand, then enter the value in kg.
-        </p>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h2 className="text-2xl font-semibold md:text-3xl">Enter your grip strength</h2>
+            <p className="mt-2 text-sm text-entelo-white/70">
+              Squeeze the dynamometer with your dominant hand, then enter the value in kg.
+            </p>
+          </div>
+          <button
+            type="button"
+            className="tap-btn shrink-0 rounded-full border border-entelo-white/20 bg-entelo-navy/50 px-4 py-2 text-sm text-entelo-white/80"
+            onClick={() => setScreen('profile')}
+          >
+            ← Edit Details
+          </button>
+        </div>
 
         <div className="mt-6 flex items-center justify-center gap-4">
           <button
