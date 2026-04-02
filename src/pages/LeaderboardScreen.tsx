@@ -126,7 +126,7 @@ export function LeaderboardScreen() {
                     type="button"
                     className="tap-btn flex h-7 w-7 items-center justify-center rounded-full border border-rose-400/40 bg-rose-500/15 text-xs text-rose-300 hover:bg-rose-500/30"
                     title="Remove entry"
-                    onClick={() => removeFromLeaderboard(entry.timestamp)}
+                    onClick={() => removeFromLeaderboard(entry.timestamp, entry.id)}
                   >
                     ✕
                   </button>

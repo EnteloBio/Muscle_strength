@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { calculateResult } from '../utils/calculations'
+import { getSupabase } from '../utils/supabase'
 import type { GripReading, GripResult, LeaderboardEntry, Screen, Sex, UserProfile } from '../types'
 
 type GameState = {
@@ -8,13 +9,15 @@ type GameState = {
   gripReadings: GripReading[]
   result: GripResult | null
   leaderboard: LeaderboardEntry[]
+  leaderboardLoading: boolean
   setScreen: (screen: Screen) => void
   setProfile: (profile: UserProfile) => void
   addGripReading: (value: number) => void
   calculateAndSetResult: () => void
   addToLeaderboard: () => void
-  removeFromLeaderboard: (timestamp: number) => void
+  removeFromLeaderboard: (timestamp: number, id?: number) => void
   clearLeaderboard: () => void
+  fetchLeaderboard: () => Promise<void>
   resetGame: () => void
 }
 
@@ -22,7 +25,7 @@ const STORAGE_KEY = 'decode-strength-leaderboard'
 
 const isSex = (value: unknown): value is Sex => value === 'male' || value === 'female'
 
-const readLeaderboard = (): LeaderboardEntry[] => {
+const readLocalLeaderboard = (): LeaderboardEntry[] => {
   if (typeof window === 'undefined') return []
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY)
@@ -49,19 +52,29 @@ const readLeaderboard = (): LeaderboardEntry[] => {
   }
 }
 
-const writeLeaderboard = (leaderboard: LeaderboardEntry[]): void => {
+const writeLocalLeaderboard = (leaderboard: LeaderboardEntry[]): void => {
   if (typeof window === 'undefined') return
   window.localStorage.setItem(STORAGE_KEY, JSON.stringify(leaderboard))
 }
+
+const sortEntries = (entries: LeaderboardEntry[]): LeaderboardEntry[] =>
+  [...entries].sort((a, b) => b.grip - a.grip || b.percentile - a.percentile)
 
 export const useGameStore = create<GameState>((set, get) => ({
   currentScreen: 'welcome',
   userProfile: null,
   gripReadings: [],
   result: null,
-  leaderboard: readLeaderboard(),
+  leaderboard: readLocalLeaderboard(),
+  leaderboardLoading: false,
 
-  setScreen: (screen) => set({ currentScreen: screen }),
+  setScreen: (screen) => {
+    set({ currentScreen: screen })
+    if (screen === 'leaderboard' || screen === 'welcome') {
+      get().fetchLeaderboard()
+    }
+  },
+
   setProfile: (profile) => set({ userProfile: profile }),
 
   addGripReading: (value) =>
@@ -92,30 +105,105 @@ export const useGameStore = create<GameState>((set, get) => ({
       timestamp: Date.now(),
     }
 
-    const next = [...leaderboard, entry]
-      .sort((a, b) => b.grip - a.grip || b.percentile - a.percentile)
-      .slice(0, 500)
-
-    writeLeaderboard(next)
+    const next = sortEntries([...leaderboard, entry]).slice(0, 500)
+    writeLocalLeaderboard(next)
     set({ leaderboard: next })
+
+    const supabase = getSupabase()
+    if (supabase) {
+      supabase
+        .from('leaderboard')
+        .insert({
+          name: entry.name,
+          company: entry.company,
+          sex: entry.sex,
+          grip: entry.grip,
+          percentile: entry.percentile,
+        })
+        .then(({ error }) => {
+          if (error) console.error('SUPABASE_INSERT_ERROR', error)
+          else get().fetchLeaderboard()
+        })
+    }
   },
 
-  removeFromLeaderboard: (timestamp: number) => {
+  removeFromLeaderboard: (timestamp: number, id?: number) => {
     const next = get().leaderboard.filter((entry) => entry.timestamp !== timestamp)
-    writeLeaderboard(next)
+    writeLocalLeaderboard(next)
     set({ leaderboard: next })
+
+    const supabase = getSupabase()
+    if (supabase && id != null) {
+      supabase
+        .from('leaderboard')
+        .delete()
+        .eq('id', id)
+        .then(({ error }) => {
+          if (error) console.error('SUPABASE_DELETE_ERROR', error)
+        })
+    }
   },
 
   clearLeaderboard: () => {
-    writeLeaderboard([])
+    writeLocalLeaderboard([])
     set({ leaderboard: [] })
+
+    const supabase = getSupabase()
+    if (supabase) {
+      supabase
+        .from('leaderboard')
+        .delete()
+        .neq('id', 0)
+        .then(({ error }) => {
+          if (error) console.error('SUPABASE_CLEAR_ERROR', error)
+        })
+    }
   },
 
-  resetGame: () =>
+  fetchLeaderboard: async () => {
+    const supabase = getSupabase()
+    if (!supabase) return
+
+    set({ leaderboardLoading: true })
+    try {
+      const { data, error } = await supabase
+        .from('leaderboard')
+        .select('*')
+        .order('grip', { ascending: false })
+        .limit(500)
+
+      if (error) {
+        console.error('SUPABASE_FETCH_ERROR', error)
+        return
+      }
+
+      if (data) {
+        const entries: LeaderboardEntry[] = data.map((row: Record<string, unknown>) => ({
+          id: Number(row.id),
+          name: String(row.name ?? 'Anonymous'),
+          company: String(row.company ?? ''),
+          sex: (isSex(row.sex) ? row.sex : 'unspecified') as LeaderboardEntry['sex'],
+          grip: Number(row.grip ?? 0),
+          percentile: Number(row.percentile ?? 0),
+          timestamp: new Date(String(row.created_at ?? '')).getTime() || Date.now(),
+        }))
+
+        const sorted = sortEntries(entries)
+        writeLocalLeaderboard(sorted)
+        set({ leaderboard: sorted })
+      }
+    } finally {
+      set({ leaderboardLoading: false })
+    }
+  },
+
+  resetGame: () => {
     set({
       currentScreen: 'welcome',
       userProfile: null,
       gripReadings: [],
       result: null,
-    }),
+    })
+    get().fetchLeaderboard()
+  },
 }))

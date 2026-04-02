@@ -37,6 +37,7 @@ export type GripResult = {
 }
 
 export type LeaderboardEntry = {
+  id?: number
   name: string
   company: string
   sex: Sex | 'unspecified'
