@@ -207,3 +207,21 @@ export const useGameStore = create<GameState>((set, get) => ({
     get().fetchLeaderboard()
   },
 }))
+
+function initRealtimeSubscription() {
+  const supabase = getSupabase()
+  if (!supabase) return
+
+  supabase
+    .channel('leaderboard-changes')
+    .on(
+      'postgres_changes',
+      { event: '*', schema: 'public', table: 'leaderboard' },
+      () => {
+        useGameStore.getState().fetchLeaderboard()
+      },
+    )
+    .subscribe()
+}
+
+initRealtimeSubscription()
