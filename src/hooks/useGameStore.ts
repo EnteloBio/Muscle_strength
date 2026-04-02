@@ -13,6 +13,7 @@ type GameState = {
   addGripReading: (value: number) => void
   calculateAndSetResult: () => void
   addToLeaderboard: () => void
+  removeFromLeaderboard: (timestamp: number) => void
   clearLeaderboard: () => void
   resetGame: () => void
 }
@@ -95,6 +96,12 @@ export const useGameStore = create<GameState>((set, get) => ({
       .sort((a, b) => b.grip - a.grip || b.percentile - a.percentile)
       .slice(0, 500)
 
+    writeLeaderboard(next)
+    set({ leaderboard: next })
+  },
+
+  removeFromLeaderboard: (timestamp: number) => {
+    const next = get().leaderboard.filter((entry) => entry.timestamp !== timestamp)
     writeLeaderboard(next)
     set({ leaderboard: next })
   },

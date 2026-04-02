@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect, useState } from 'react'
 import confetti from 'canvas-confetti'
 import { motion } from 'framer-motion'
 import { useGameStore } from '../hooks/useGameStore'
@@ -10,10 +10,17 @@ export function LoadingScreen() {
   const setScreen = useGameStore((state) => state.setScreen)
   const addToLeaderboard = useGameStore((state) => state.addToLeaderboard)
 
-  const ticker = useMemo(() => Math.round((Date.now() / 75) % 80) + 18, [])
+  const [ticker, setTicker] = useState(Math.floor(Math.random() * 80) + 18)
+  const [cellIdx, setCellIdx] = useState(0)
 
   useEffect(() => {
+    const interval = window.setInterval(() => {
+      setTicker(Math.floor(Math.random() * 80) + 18)
+      setCellIdx((i) => (i + 1) % cellNames.length)
+    }, 75)
+
     const t = window.setTimeout(() => {
+      window.clearInterval(interval)
       addToLeaderboard()
       setScreen('results')
     }, 3000)
@@ -22,7 +29,10 @@ export function LoadingScreen() {
       confetti({ particleCount: 140, spread: 90, colors: ['#8b7db8', '#a594d0', '#6b5d98'] })
     }
 
-    return () => window.clearTimeout(t)
+    return () => {
+      window.clearInterval(interval)
+      window.clearTimeout(t)
+    }
   }, [addToLeaderboard, result?.percentile, setScreen])
 
   return (
@@ -35,20 +45,15 @@ export function LoadingScreen() {
         <motion.div
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.5 }}
-          className="mt-8 bg-gradient-to-r from-entelo-blue to-entelo-teal bg-clip-text text-7xl font-bold text-transparent"
+          transition={{ duration: 0.3 }}
+          className="mt-8 bg-gradient-to-r from-entelo-blue to-entelo-teal bg-clip-text text-7xl font-bold tabular-nums text-transparent"
         >
           {ticker}
         </motion.div>
 
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: [0.2, 1, 0.2] }}
-          transition={{ duration: 2, repeat: Infinity }}
-          className="mt-4 text-sm text-entelo-white/70"
-        >
-          {cellNames[Math.floor(Date.now() / 250) % cellNames.length]}
-        </motion.p>
+        <p className="mt-4 text-sm text-entelo-white/70">
+          {cellNames[cellIdx]}
+        </p>
       </div>
     </section>
   )

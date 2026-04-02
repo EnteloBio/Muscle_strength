@@ -2,14 +2,20 @@ import { useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 import { useGameStore } from '../hooks/useGameStore'
 
+const ADMIN_PIN = '1234'
+
 export function LeaderboardScreen() {
   const leaderboard = useGameStore((state) => state.leaderboard)
   const result = useGameStore((state) => state.result)
   const userProfile = useGameStore((state) => state.userProfile)
   const clearLeaderboard = useGameStore((state) => state.clearLeaderboard)
+  const removeFromLeaderboard = useGameStore((state) => state.removeFromLeaderboard)
   const setScreen = useGameStore((state) => state.setScreen)
   const resetGame = useGameStore((state) => state.resetGame)
+
+  const [adminMode, setAdminMode] = useState(false)
   const [showPinInput, setShowPinInput] = useState(false)
+  const [pinAction, setPinAction] = useState<'admin' | 'reset'>('admin')
   const [pin, setPin] = useState('')
   const [pinError, setPinError] = useState(false)
 
@@ -47,11 +53,38 @@ export function LeaderboardScreen() {
       .find((entry) => entry.name === userProfile.name && entry.grip === result.bestGrip)
   }, [ranked, result, userProfile])
 
+  const openPinPrompt = (action: 'admin' | 'reset') => {
+    setPinAction(action)
+    setPin('')
+    setPinError(false)
+    setShowPinInput(true)
+  }
+
+  const handlePinSubmit = () => {
+    if (pin !== ADMIN_PIN) {
+      setPinError(true)
+      return
+    }
+    setShowPinInput(false)
+    setPin('')
+    setPinError(false)
+    if (pinAction === 'reset') {
+      clearLeaderboard()
+      setAdminMode(false)
+    } else {
+      setAdminMode(true)
+    }
+  }
+
+  const closePinPrompt = () => {
+    setShowPinInput(false)
+    setPin('')
+    setPinError(false)
+  }
+
   const renderTable = (
     title: string,
-    entries: Array<
-      (typeof maleTop)[number]
-    >,
+    entries: Array<(typeof maleTop)[number]>,
   ) => (
     <div className="section-card">
       <h3 className="text-lg font-semibold text-entelo-white">{title}</h3>
@@ -71,7 +104,11 @@ export function LeaderboardScreen() {
             return (
               <div
                 key={`${title}-${entry.name}-${entry.timestamp}`}
-                className={`grid grid-cols-[42px_minmax(0,1fr)_90px_74px] items-center gap-2 rounded-lg border px-3 py-2 text-sm ${
+                className={`grid items-center gap-2 rounded-lg border px-3 py-2 text-sm ${
+                  adminMode
+                    ? 'grid-cols-[42px_minmax(0,1fr)_90px_74px_36px]'
+                    : 'grid-cols-[42px_minmax(0,1fr)_90px_74px]'
+                } ${
                   highlighted
                     ? 'border-entelo-blue bg-entelo-blue/10 shadow-[0_0_18px_rgba(139,125,184,0.35)]'
                     : 'border-entelo-white/10 bg-entelo-navy/35'
@@ -84,6 +121,16 @@ export function LeaderboardScreen() {
                 </span>
                 <span className="text-right whitespace-nowrap">{entry.grip.toFixed(1)} kg</span>
                 <span className="text-right whitespace-nowrap">{entry.percentile}th</span>
+                {adminMode ? (
+                  <button
+                    type="button"
+                    className="tap-btn flex h-7 w-7 items-center justify-center rounded-full border border-rose-400/40 bg-rose-500/15 text-xs text-rose-300 hover:bg-rose-500/30"
+                    title="Remove entry"
+                    onClick={() => removeFromLeaderboard(entry.timestamp)}
+                  >
+                    ✕
+                  </button>
+                ) : null}
               </div>
             )
           })
@@ -125,7 +172,7 @@ export function LeaderboardScreen() {
           <button type="button" className="tap-btn action-btn" onClick={() => setScreen('results')}>← BACK TO RESULTS</button>
         </div>
 
-        <div className="mt-4 flex justify-end">
+        <div className="mt-4 flex items-center justify-end gap-3">
           {showPinInput ? (
             <div className="flex items-center gap-2">
               <input
@@ -138,46 +185,45 @@ export function LeaderboardScreen() {
                   setPin(e.target.value)
                   setPinError(false)
                 }}
+                onKeyDown={(e) => { if (e.key === 'Enter') handlePinSubmit() }}
                 className="input-base w-20 text-center text-sm"
                 autoFocus
               />
-              <button
-                type="button"
-                className="tap-btn text-xs text-entelo-white/70 underline"
-                onClick={() => {
-                  if (pin === '1234') {
-                    clearLeaderboard()
-                    setShowPinInput(false)
-                    setPin('')
-                    setPinError(false)
-                  } else {
-                    setPinError(true)
-                  }
-                }}
-              >
+              <button type="button" className="tap-btn text-xs text-entelo-white/70 underline" onClick={handlePinSubmit}>
                 Confirm
               </button>
-              <button
-                type="button"
-                className="tap-btn text-xs text-entelo-white/50"
-                onClick={() => {
-                  setShowPinInput(false)
-                  setPin('')
-                  setPinError(false)
-                }}
-              >
+              <button type="button" className="tap-btn text-xs text-entelo-white/50" onClick={closePinPrompt}>
                 Cancel
               </button>
               {pinError ? <span className="text-xs text-rose-300">Wrong PIN</span> : null}
             </div>
           ) : (
-            <button
-              type="button"
-              className="tap-btn text-xs text-entelo-white/70 underline"
-              onClick={() => setShowPinInput(true)}
-            >
-              RESET LEADERBOARD
-            </button>
+            <>
+              {adminMode ? (
+                <button
+                  type="button"
+                  className="tap-btn text-xs text-entelo-white/70 underline"
+                  onClick={() => setAdminMode(false)}
+                >
+                  EXIT EDIT MODE
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  className="tap-btn text-xs text-entelo-white/70 underline"
+                  onClick={() => openPinPrompt('admin')}
+                >
+                  EDIT ENTRIES
+                </button>
+              )}
+              <button
+                type="button"
+                className="tap-btn text-xs text-entelo-white/70 underline"
+                onClick={() => openPinPrompt('reset')}
+              >
+                RESET LEADERBOARD
+              </button>
+            </>
           )}
         </div>
       </motion.div>
