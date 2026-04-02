@@ -140,7 +140,7 @@ export function LeaderboardScreen() {
   )
 
   return (
-    <section className="mx-auto h-full w-full max-w-5xl px-4 py-4">
+    <section className="mx-auto h-full w-full max-w-5xl px-4 pb-4 pt-20 md:pt-24">
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="glass-panel h-full overflow-y-auto p-6 md:p-8">
         <h2 className="bg-gradient-to-r from-entelo-blue via-entelo-teal to-entelo-blue bg-clip-text text-2xl font-semibold text-transparent md:text-3xl">
           🏆 TODAY'S STRONGEST GRIPS
