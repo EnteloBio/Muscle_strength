@@ -25,8 +25,17 @@ export function LoadingScreen() {
       setScreen('results')
     }, 3000)
 
-    if ((result?.percentile ?? 0) >= 75) {
+    const pct = result?.percentile ?? 0
+    if (pct >= 95) {
+      // Elite: big double-burst confetti with gold
+      confetti({ particleCount: 200, spread: 120, colors: ['#ffd700', '#ffb300', '#8b7db8', '#a594d0'], origin: { y: 0.6 } })
+      setTimeout(() => confetti({ particleCount: 120, spread: 80, colors: ['#ffd700', '#ffb300', '#fff'], origin: { y: 0.5 } }), 400)
+    } else if (pct >= 75) {
+      // Strong: standard confetti
       confetti({ particleCount: 140, spread: 90, colors: ['#8b7db8', '#a594d0', '#6b5d98'] })
+    } else if (pct >= 50) {
+      // Above average: subtle celebration
+      confetti({ particleCount: 60, spread: 55, colors: ['#8b7db8', '#a594d0'], gravity: 1.2 })
     }
 
     return () => {

@@ -60,7 +60,7 @@ export function ProfileScreen() {
               className="input-base"
               value={name}
               onChange={(event) => setName(event.target.value)}
-              placeholder="First name"
+              placeholder="Full name"
             />
             {errors.name ? <span className="error-text">Name is required.</span> : null}
           </label>

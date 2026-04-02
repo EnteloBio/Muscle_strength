@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useMemo } from 'react'
+import { OfflineIndicator } from './components/OfflineIndicator'
 import { ParticleBackground } from './components/ParticleBackground'
 import { useGameStore } from './hooks/useGameStore'
 import { GripScreen } from './pages/GripScreen'
@@ -41,6 +42,7 @@ function App() {
 
   return (
     <main className="relative h-screen w-screen overflow-hidden bg-entelo-dark text-entelo-white">
+      <OfflineIndicator />
       {!captureMode ? <ParticleBackground /> : null}
 
       {currentScreen !== 'welcome' ? (

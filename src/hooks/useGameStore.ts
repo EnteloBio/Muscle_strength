@@ -1,6 +1,8 @@
 import { create } from 'zustand'
 import { calculateResult } from '../utils/calculations'
 import { getSupabase } from '../utils/supabase'
+import { enqueue, flushQueue } from '../utils/offlineQueue'
+import { trackEvent, resetSessionId } from '../utils/analytics'
 import type { GripReading, GripResult, LeaderboardEntry, Screen, Sex, UserProfile } from '../types'
 
 type GameState = {
@@ -70,18 +72,29 @@ export const useGameStore = create<GameState>((set, get) => ({
 
   setScreen: (screen) => {
     set({ currentScreen: screen })
-    if (screen === 'leaderboard' || screen === 'welcome') {
+    if (screen === 'leaderboard') {
+      trackEvent('leaderboard_viewed')
       get().fetchLeaderboard()
+    }
+    if (screen === 'welcome') {
+      get().fetchLeaderboard()
+    }
+    if (screen === 'results') {
+      trackEvent('results_viewed')
     }
   },
 
-  setProfile: (profile) => set({ userProfile: profile }),
+  setProfile: (profile) => {
+    set({ userProfile: profile })
+    trackEvent('profile_completed', { age: profile.age, sex: profile.sex })
+  },
 
   addGripReading: (value) =>
     set((state) => {
       if (state.gripReadings.length >= 3) return state
       const normalized = Math.round(Math.min(150, Math.max(1, value)) * 10) / 10
       const nextAttempt = state.gripReadings.length + 1
+      trackEvent('grip_recorded', { attempt: nextAttempt, value: normalized })
       return { gripReadings: [...state.gripReadings, { attempt: nextAttempt, value: normalized }] }
     }),
 
@@ -109,21 +122,29 @@ export const useGameStore = create<GameState>((set, get) => ({
     writeLocalLeaderboard(next)
     set({ leaderboard: next })
 
+    const insertPayload = {
+      name: entry.name,
+      company: entry.company,
+      sex: entry.sex,
+      grip: entry.grip,
+      percentile: entry.percentile,
+    }
+
     const supabase = getSupabase()
-    if (supabase) {
+    if (supabase && navigator.onLine) {
       supabase
         .from('leaderboard')
-        .insert({
-          name: entry.name,
-          company: entry.company,
-          sex: entry.sex,
-          grip: entry.grip,
-          percentile: entry.percentile,
-        })
+        .insert(insertPayload)
         .then(({ error }) => {
-          if (error) console.error('SUPABASE_INSERT_ERROR', error)
-          else get().fetchLeaderboard()
+          if (error) {
+            console.error('SUPABASE_INSERT_ERROR', error)
+            enqueue({ table: 'leaderboard', operation: 'insert', payload: insertPayload })
+          } else {
+            get().fetchLeaderboard()
+          }
         })
+    } else if (supabase) {
+      enqueue({ table: 'leaderboard', operation: 'insert', payload: insertPayload })
     }
   },
 
@@ -134,13 +155,20 @@ export const useGameStore = create<GameState>((set, get) => ({
 
     const supabase = getSupabase()
     if (supabase && id != null) {
-      supabase
-        .from('leaderboard')
-        .delete()
-        .eq('id', id)
-        .then(({ error }) => {
-          if (error) console.error('SUPABASE_DELETE_ERROR', error)
-        })
+      if (navigator.onLine) {
+        supabase
+          .from('leaderboard')
+          .delete()
+          .eq('id', id)
+          .then(({ error }) => {
+            if (error) {
+              console.error('SUPABASE_DELETE_ERROR', error)
+              enqueue({ table: 'leaderboard', operation: 'delete', payload: { id } })
+            }
+          })
+      } else {
+        enqueue({ table: 'leaderboard', operation: 'delete', payload: { id } })
+      }
     }
   },
 
@@ -198,6 +226,12 @@ export const useGameStore = create<GameState>((set, get) => ({
   },
 
   resetGame: () => {
+    const prev = get().currentScreen
+    if (prev === 'results') {
+      trackEvent('session_timeout')
+    }
+    resetSessionId()
+    trackEvent('session_start')
     set({
       currentScreen: 'welcome',
       userProfile: null,
@@ -205,6 +239,7 @@ export const useGameStore = create<GameState>((set, get) => ({
       result: null,
     })
     get().fetchLeaderboard()
+    flushQueue()
   },
 }))
 

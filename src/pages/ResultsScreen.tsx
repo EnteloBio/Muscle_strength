@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 import { factoids } from '../data/factoids'
 import { useGameStore } from '../hooks/useGameStore'
+import { trackEvent } from '../utils/analytics'
 import enteloQrCode from '../../logos/adobe-express-qr-code.png'
 
 const formatDeltaLine = (actualAge: number, muscleAge: number): { text: string; tone: string } => {
@@ -18,12 +19,6 @@ export function ResultsScreen() {
   const resetGame = useGameStore((state) => state.resetGame)
 
   const [factIdx, setFactIdx] = useState(() => Math.floor(Math.random() * factoids.length))
-  const [showEmailModal, setShowEmailModal] = useState(false)
-  const [email, setEmail] = useState(userProfile?.email ?? '')
-  const [consent, setConsent] = useState(false)
-  const [isSending, setIsSending] = useState(false)
-  const [sendError, setSendError] = useState('')
-  const [sendSuccess, setSendSuccess] = useState('')
 
   useEffect(() => {
     const timer = window.setInterval(() => setFactIdx((idx) => (idx + 1) % factoids.length), 8000)
@@ -45,60 +40,6 @@ export function ResultsScreen() {
         <button type="button" className="tap-btn rounded-full border px-6 py-3" onClick={resetGame}>Restart</button>
       </section>
     )
-  }
-
-  const submitEmail = async () => {
-    const trimmedEmail = email.trim()
-    const emailApiUrl = import.meta.env.VITE_EMAIL_API_URL?.trim()
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-
-    setSendError('')
-    setSendSuccess('')
-
-    if (!emailRegex.test(trimmedEmail)) {
-      setSendError('Please enter a valid email address.')
-      return
-    }
-
-    if (!emailApiUrl) {
-      setSendError('Email service is not configured. Set VITE_EMAIL_API_URL in your environment.')
-      return
-    }
-
-    const payload = {
-      email: trimmedEmail,
-      consent,
-      name: userProfile.name,
-      grip: result.bestGrip,
-      percentile: display.percentile,
-      muscleAge: display.muscleAge,
-      tier: result.celebrityTier.name,
-      cellType: result.cellType.name,
-    }
-
-    try {
-      setIsSending(true)
-      const response = await fetch(emailApiUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      })
-
-      if (!response.ok) {
-        throw new Error(`Request failed with status ${response.status}`)
-      }
-
-      setSendSuccess('Results sent successfully.')
-      window.setTimeout(() => {
-        setShowEmailModal(false)
-        setSendSuccess('')
-      }, 1200)
-    } catch (error) {
-      console.error('EMAIL_RESULTS_ERROR', error)
-      setSendError('Could not send email right now. Please try again.')
-    } finally {
-      setIsSending(false)
-    }
   }
 
   return (
@@ -164,6 +105,7 @@ export function ResultsScreen() {
                 rel="noreferrer"
                 className="mx-auto block w-fit"
                 aria-label="Open resilience.study"
+                onClick={() => trackEvent('qr_scanned')}
               >
                 <img
                   src={enteloQrCode}
@@ -173,49 +115,14 @@ export function ResultsScreen() {
               </a>
               <p className="mt-3 text-base text-entelo-white/80">resilience.study</p>
             </div>
-            <div className="mt-4 grid gap-2 md:grid-cols-3">
+            <div className="mt-4 grid gap-2 md:grid-cols-2">
               <button type="button" className="tap-btn action-btn text-lg" onClick={() => setScreen('leaderboard')}>🏆 LEADERBOARD</button>
-              <button type="button" className="tap-btn action-btn text-lg" onClick={resetGame}>🔄 PLAY AGAIN</button>
-              <button type="button" className="tap-btn btn-primary text-lg" onClick={() => setShowEmailModal(true)}>📧 EMAIL MY RESULTS</button>
+              <button type="button" className="tap-btn btn-primary text-lg" onClick={() => { trackEvent('play_again'); resetGame() }}>🔄 PLAY AGAIN</button>
             </div>
           </footer>
         </div>
       </motion.div>
 
-      {showEmailModal ? (
-        <div className="fixed inset-0 z-50 grid place-items-center bg-black/70 p-4">
-          <div className="glass-panel w-full max-w-md p-5">
-            <h3 className="text-lg font-semibold">Email your results</h3>
-            <label className="mt-3 flex flex-col gap-2">
-              <span className="text-sm text-entelo-white/85">Email</span>
-              <input className="input-base" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="you@company.com" />
-            </label>
-            <label className="mt-3 flex items-start gap-2 text-sm text-entelo-white/80">
-              <input type="checkbox" checked={consent} onChange={(event) => setConsent(event.target.checked)} className="mt-1" />
-              I'd like to hear about Entelo Bio's research.
-            </label>
-            {sendError ? <p className="mt-3 text-sm text-rose-300">{sendError}</p> : null}
-            {sendSuccess ? <p className="mt-3 text-sm text-emerald-300">{sendSuccess}</p> : null}
-            <div className="mt-4 flex gap-2">
-              <button
-                type="button"
-                className="tap-btn action-btn"
-                onClick={() => {
-                  setSendError('')
-                  setSendSuccess('')
-                  setShowEmailModal(false)
-                }}
-                disabled={isSending}
-              >
-                Cancel
-              </button>
-              <button type="button" className="tap-btn btn-primary px-4" onClick={submitEmail} disabled={isSending}>
-                {isSending ? 'Sending...' : 'Send'}
-              </button>
-            </div>
-          </div>
-        </div>
-      ) : null}
     </section>
   )
 }
