@@ -21,7 +21,7 @@ function App() {
   )
 
   useEffect(() => {
-    if (!['results', 'leaderboard'].includes(currentScreen)) return
+    if (currentScreen !== 'results') return
 
     let timeout = window.setTimeout(() => resetGame(), 60000)
 
