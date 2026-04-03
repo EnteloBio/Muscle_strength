@@ -10,15 +10,17 @@ export function GripScreen() {
   const addGripReading = useGameStore((state) => state.addGripReading)
   const calculateAndSetResult = useGameStore((state) => state.calculateAndSetResult)
 
-  const [value, setValue] = useState(35)
+  const [raw, setRaw] = useState('35')
 
+  const numericValue = raw === '' ? 0 : Number(raw)
   const attempt = gripReadings.length + 1
   const best = useMemo(() => Math.max(0, ...gripReadings.map((item) => item.value)), [gripReadings])
-  const meterPercent = Math.round((clamp(value) / 150) * 100)
+  const meterPercent = Math.round((clamp(Math.max(numericValue, 0)) / 150) * 100)
 
   const recordAttempt = () => {
-    addGripReading(value)
-    setValue(35)
+    if (raw === '' || numericValue <= 0) return
+    addGripReading(numericValue)
+    setRaw('35')
   }
 
   const onCalculate = () => {
@@ -50,7 +52,7 @@ export function GripScreen() {
             type="button"
             className="tap-btn icon-btn"
             aria-label="Decrease grip"
-            onClick={() => setValue((current) => Math.round(clamp(current - 0.5) * 10) / 10)}
+            onClick={() => setRaw((cur) => String(Math.round(clamp((cur === '' ? 0 : Number(cur)) - 0.5) * 10) / 10))}
           >
             -
           </button>
@@ -61,10 +63,12 @@ export function GripScreen() {
               min={1}
               max={150}
               step={0.1}
-              value={value}
+              value={raw}
               onChange={(event) => {
-                const raw = Number(event.target.value)
-                setValue(Number.isNaN(raw) ? 1 : Math.round(clamp(raw) * 10) / 10)
+                const v = event.target.value
+                if (v === '' || v === '-') { setRaw(''); return }
+                const n = Number(v)
+                if (!Number.isNaN(n)) setRaw(String(Math.round(clamp(n) * 10) / 10))
               }}
               className="input-base w-44 text-center text-5xl font-bold md:w-56 md:text-6xl"
             />
@@ -74,7 +78,7 @@ export function GripScreen() {
             type="button"
             className="tap-btn icon-btn"
             aria-label="Increase grip"
-            onClick={() => setValue((current) => Math.round(clamp(current + 0.5) * 10) / 10)}
+            onClick={() => setRaw((cur) => String(Math.round(clamp((cur === '' ? 0 : Number(cur)) + 0.5) * 10) / 10))}
           >
             +
           </button>
